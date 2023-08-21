@@ -35,6 +35,7 @@ pipeline {
     }
     stage ('Push Image') {
       when {
+        expression { params.CHOICE_OVERLAY != 'NO_CHOICE' }
         beforeAgent true
       }
       steps {
@@ -43,6 +44,7 @@ pipeline {
     }
     stage ('Update Kustomize') {
       when {
+        expression { params.CHOICE_OVERLAY != 'NO_CHOICE' } 
         beforeAgent true
       }
       steps {
@@ -53,6 +55,7 @@ pipeline {
     }
     stage ('Push Kustomize'){
       when {
+        expression { params.CHOICE_OVERLAY != 'NO_CHOICE' } 
         beforeAgent true
       }
       steps {
