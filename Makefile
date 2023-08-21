@@ -20,16 +20,3 @@ build-image: ## Build image
 push-image: build-image ## Push image
 	docker push $(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
 	docker rmi $(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
-
-edit-kustomize: ## Edit kustomize
-	git clone git@github.com:Devstack-CICD/gitops.git && \
-	cd gitops/gitops/$(DOCKER_IMAGE_NAME)/overlays/$(DOCKER_PROJECT_NAME) && \
-		kustomize edit set image $(DOCKER_IMAGE_NAME)=$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
-
-push-kustomize: ## Push update Kustomize file
-	cd gitops && \
-		git config --global user.email $(GIT_EMAIL) && \
-		git config --global user.name $(GIT_USERNAME) && \
-		git add gitops/gitops/$(DOCKER_IMAGE_NAME)/overlays/$(DOCKER_PROJECT_NAME)/kustomization.yaml && \
-		git commit -m "$(COMMIT_MSG)" && \
-		git push git@github.com:Devstack-CICD/gitops.git HEAD:$(GIT_BRANCH)
