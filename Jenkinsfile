@@ -41,28 +41,6 @@ pipeline {
       steps {
         sh "DOCKER_PROJECT_NAME=${params.CHOICE_OVERLAY} make push-image"
       }
-    }
-    stage ('Update Kustomize') {
-      when {
-        expression { params.CHOICE_OVERLAY != 'NO_CHOICE' } 
-        beforeAgent true
-      }
-      steps {
-        sshagent (credentials: ['github_ssh']) {
-          sh "DOCKER_PROJECT_NAME=${params.CHOICE_OVERLAY} make edit-kustomize"
-        }
-      }
-    }
-    stage ('Push Kustomize'){
-      when {
-        expression { params.CHOICE_OVERLAY != 'NO_CHOICE' } 
-        beforeAgent true
-      }
-      steps {
-        sshagent (credentials: ['github_ssh']) {
-          sh "DOCKER_PROJECT_NAME=${params.CHOICE_OVERLAY} make push-kustomize"
-        }
-      }
-    }    
+    }  
   }
 }
